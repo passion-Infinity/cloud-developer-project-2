@@ -6,7 +6,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Init the Express application
   const app = express();
-  const files: string[] = [];
 
   // Set the network port
   const port = process.env.PORT || 8082;
@@ -35,19 +34,22 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    await deleteLocalFiles(files);
     res.send("try GET /filteredimage?image_url={{}}")
   } );
 
-  app.get("/filteredimage", async (req, res) => {
-    const { image_url } = req.query;
-    if(!image_url) {
-      res.status(400).send("image_url is not availiable!");
+  app.get("/filteredimage/", async (req, res) => {
+    try {
+      const { image_url } = req.query;
+      if(!image_url) {
+        res.status(400).send("Bad request!");
+      }
+      console.log("path image_url: ", image_url);
+      const filteredpath = await filterImageFromURL(image_url);
+      res.sendFile(filteredpath);
+      res.on('finish', () => deleteLocalFiles([filteredpath]));
+    } catch (error) {
+      return res.status(500).send({error: 'Unable to process your request'});
     }
-    
-    const filteredpath = await filterImageFromURL(image_url);
-    files.push(filteredpath);
-    res.sendFile(filteredpath);
   }); 
   
   // Start the Server
