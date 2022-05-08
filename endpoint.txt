@@ -1,0 +1,5 @@
+http://udagram-dev-dev.us-east-1.elasticbeanstalk.com/
+
+http://udagram-dev-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://ecdn.game4v.com/g4v-content/uploads/2021/03/Luffy.jpg
+
+https://github.com/passion-Infinity/cloud-developer-project-2
